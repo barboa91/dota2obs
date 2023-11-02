@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "axios": "^1.6.0",
     "dota2-gsi": "^1.0.2",
     "heroicons": "^2.0.18",
     "latest": "^0.2.0",

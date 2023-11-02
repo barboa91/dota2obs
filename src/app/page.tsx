@@ -1,14 +1,16 @@
 
 
 "use client"
-import  HeroBox  from '../components/HeroBox.js'
+import Hero from '../components/Hero.js'
 
 
 export default function Home() {
   return (
-    <main className="farts">
+    <main className="main">
       <div>Alex Barbosa</div>
-      <HeroBox></HeroBox>
+      <Hero></Hero>
+
+      {/* <HeroBox></HeroBox> */}
     </main>
   )
 }
