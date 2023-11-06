@@ -1,0 +1,20 @@
+.hero{
+    display: flex;
+    min-height: 120px;
+    height: 200px;
+    background-color: blue;
+    border: 3px black;
+}
+.hero_portrait{
+    height:100%;
+    width: 120px;
+    background-color: blueviolet;
+}
+.items{
+    display: flex;
+    width: 300px;
+    flex-wrap: wrap;
+}
+.item{
+    min-width: 33%;
+}
