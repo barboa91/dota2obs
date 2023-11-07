@@ -1,67 +1,58 @@
-// // pages/api/data.js
-// import axios from 'axios'
 
-
-// async function fetchAllReviews() {
-//   try{
-//     const res = await axios.get('http://192.168.1.2:3001/fart')
-    
-//     const data = res.data
-
-//     console.log(data)
-//     return res
-//     }
-//     catch(error){
-//       console.error(error)
-//     }
-//   }
-
-// export default function handler() {
-//   fetchAllReviews()
-//   }
-  
 'use client';
 import React, { useEffect } from 'react';
-import EventSource from 'eventsource';
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 
-async function get_dota_data(){
-  const res = await fetch('http://192.168.1.2:3001/data2')
-  console.log("RESOPONSE: " , res)
 
-  if (!res.ok) {
-    throw new Error(`Error! status: ${res.status}`);
-  }
-  return res.json()
+const serverBaseURL = "http://localhost:3001/";
 
-}
 
-// Define a custom component that listens to SSE events
 const SSEComponent = () => {
   const [data, setData] = React.useState(null);
+  
 
   useEffect(() => {
     // Define a handler for the message event
     
-    setData(get_dota_data())
+    // setData(get_dota_data())
+    const fetchData = async () => {
+      await fetchEventSource(`${serverBaseURL}data`, {
+        method: "POST",
+        headers: {
+          Accept: "text/event-stream",
+        },
+        onopen(res) {
+          if (res.ok && res.status === 200) {
+            console.log("Connection made ", res);
 
-    console.log(data)
-    const eventSource = new EventSource('http://192.168.1.2:3001/data');
-    eventSource.onmessage = (e) => {
-      console.log(e)
-      setData(JSON.parse(e.data));
-    };
+          } else if (
+            res.status >= 400 &&
+            res.status < 500 &&
+            res.status !== 429
+          ) {
+            console.log("Client side error ", res);
+          }
+        },
+        onmessage(event) {
 
-    // Define a handler for the error event
-    eventSource.onerror = (e) => {
-      console.log("error")
-      console.error(e);
-    };
+          const parsedData = JSON.parse(event.data);
+          // setData((data) => [...data, parsedData]);  
+          console.log(event.data);
 
-    return () => {
-      console.log(eventSource.url)
-      eventSource.close();
+          
+        },
+        onclose() {
+          console.log("Connection closed by the server");
+        },
+        onerror(err) {
+          console.log("There was an error from server", err);
+        },
+      });
     };
-  }, []); 
+    fetchData();
+  }, []);
+
+
 
 
   return (
