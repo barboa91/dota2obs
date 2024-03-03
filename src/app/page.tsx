@@ -1,24 +1,16 @@
-"use client"
-import SSEComponent from '@/pages/api/data.js';
-import Hero from '../components/Hero.js'
+"use client";
+import SSEComponent from "@/pages/api/data.js";
+import Hero from "../components/Hero.js";
+import "tailwindcss/tailwind.css";
+import MyApp from "../pages/page.tsx";
+import MatchSearch from "../components/MatchSearch.js";
 
-// var source  = new EventSource('http://192.168.1.2:3001/fart')
-
-// source.addEventListener('message', (event) => {
-//   // Log the data from the event
-//   console.log(event.data);
-// });
-
-
-
-export default function Home() {
+export default function Home({ launches }) {
   return (
-    <main className="main">
-      <div>Alex Barbosa</div>
-      <Hero></Hero>
-      <SSEComponent></SSEComponent>
-
-      {/* <HeroBox></HeroBox> */}
-    </main>
-  )
+    <div>
+      <MatchSearch />
+    </div>
+  );
 }
+
+//Some code or somthing coool

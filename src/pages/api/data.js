@@ -2,18 +2,12 @@
 'use client';
 import React, { useEffect } from 'react';
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-
-
 const serverBaseURL = "http://localhost:3001/";
-
 
 const SSEComponent = () => {
   const [data, setData] = React.useState(null);
-  
-
   useEffect(() => {
-    // Define a handler for the message event
-    
+    // Define a handler for the message event    
     // setData(get_dota_data())
     const fetchData = async () => {
       await fetchEventSource(`${serverBaseURL}data`, {
@@ -34,12 +28,13 @@ const SSEComponent = () => {
           }
         },
         onmessage(event) {
-
           const parsedData = JSON.parse(event.data);
-          // setData((data) => [...data, parsedData]);  
-          console.log(event.data);
+          // setData((data) => event.data);
+          // Here is where I need to parse the data  
+          console.log(parsedData);
+          setData((data) => parsedData)
 
-          
+          console.log("data", data)
         },
         onclose() {
           console.log("Connection closed by the server");
@@ -58,9 +53,9 @@ const SSEComponent = () => {
   return (
     <div>
       {data ? (
-        <p>Data from the server: {data.hello}</p>
+        <p>Data from the server: {data.gamestate.provider.timestamp}</p>
       ) : (
-        <p>Loading...</p>
+        <p>Loading. ..</p>
       )}
     </div>
   );
